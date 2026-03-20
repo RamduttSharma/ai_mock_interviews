@@ -94,35 +94,15 @@ export async function getCurrentUser(): Promise<User | null> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session")?.value;
 
-  console.log("🍪 COOKIE:", sessionCookie ? "EXISTS" : "MISSING");
-
   if (!sessionCookie) return null;
 
   try {
-    const decodedClaims = await auth.verifySessionCookie(sessionCookie);
-
-    console.log("✅ DECODED:", decodedClaims);
+    const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
 
     const userRef = db.collection("users").doc(decodedClaims.uid);
     const userRecord = await userRef.get();
 
-    console.log("📦 USER DOC EXISTS:", userRecord.exists);
-
-    // 🔥 MAIN FIX: AUTO CREATE USER
-    if (!userRecord.exists) {
-      console.log("⚠️ Creating user in Firestore...");
-
-      await userRef.set({
-        email: decodedClaims.email,
-        name: decodedClaims.name || "User",
-      });
-
-      return {
-        id: decodedClaims.uid,
-        email: decodedClaims.email,
-        name: decodedClaims.name || "User",
-      } as User;
-    }
+    if (!userRecord.exists) return null;
 
     return {
       ...userRecord.data(),

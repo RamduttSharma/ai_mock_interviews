@@ -11,6 +11,7 @@ import {
   getInterviewsByUserId,
   getLatestInterviews,
 } from "@/lib/actions/general.action";
+import { dummyInterviews } from "@/constants";
 
 async function Home() {
   const user = await getCurrentUser();
