@@ -17,9 +17,12 @@ export async function createFeedback(params: CreateFeedbackParams) {
       )
       .join("") : "No transcript available";
 
+      console.log(formattedTranscript);
+      
+
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
-        structuredOutputs: true,
+        structuredOutputs: false,
       }),
       schema: feedbackSchema,
       prompt: `
@@ -37,6 +40,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
       system:
         "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
     });
+    console.log(object);
+    
 
     const feedback = {
       interviewId: interviewId,
@@ -48,6 +53,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
       finalAssessment: object.finalAssessment,
       createdAt: new Date().toISOString(),
     };
+    console.log(feedback);
+    
 
     let feedbackRef;
 
