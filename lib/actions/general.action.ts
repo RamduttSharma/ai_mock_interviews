@@ -10,16 +10,16 @@ export async function createFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript, feedbackId } = params;
 
   try {
-    const formattedTranscript = transcript
+    const formattedTranscript =transcript?.length ? transcript
       .map(
         (sentence: { role: string; content: string }) =>
           `- ${sentence.role}: ${sentence.content}\n`
       )
-      .join("");
+      .join("") : "No transcript available";
 
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
-        structuredOutputs: false,
+        structuredOutputs: true,
       }),
       schema: feedbackSchema,
       prompt: `
@@ -41,8 +41,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
     const feedback = {
       interviewId: interviewId,
       userId: userId,
-      totalScore: object.totalScore,
-      categoryScores: object.categoryScores,
+      totalScore: object?.totalScore ?? 0,
+      categoryScores: object?.categoryScores ?? {},
       strengths: object.strengths,
       areasForImprovement: object.areasForImprovement,
       finalAssessment: object.finalAssessment,
