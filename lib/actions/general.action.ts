@@ -10,17 +10,12 @@ export async function createFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript, feedbackId } = params;
 
   try {
-    console.log("hii");
-    
-    const formattedTranscript =transcript?.length ? transcript
+    const formattedTranscript = transcript
       .map(
         (sentence: { role: string; content: string }) =>
           `- ${sentence.role}: ${sentence.content}\n`
       )
-      .join("") : "No transcript available";
-
-      console.log(formattedTranscript);
-      
+      .join("");
 
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
@@ -42,21 +37,17 @@ export async function createFeedback(params: CreateFeedbackParams) {
       system:
         "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
     });
-    console.log(object);
-    
 
     const feedback = {
       interviewId: interviewId,
       userId: userId,
-      totalScore: object?.totalScore ?? 0,
-      categoryScores: object?.categoryScores ?? {},
+      totalScore: object.totalScore,
+      categoryScores: object.categoryScores,
       strengths: object.strengths,
       areasForImprovement: object.areasForImprovement,
       finalAssessment: object.finalAssessment,
       createdAt: new Date().toISOString(),
     };
-    console.log(feedback);
-    
 
     let feedbackRef;
 
@@ -67,12 +58,10 @@ export async function createFeedback(params: CreateFeedbackParams) {
     }
 
     await feedbackRef.set(feedback);
-    console.log("Saving...");
-    
 
     return { success: true, feedbackId: feedbackRef.id };
   } catch (error) {
-    console.error("Error saving feedback:", error);
+    console.error("Error creating feedback:", error);
     return { success: false };
   }
 }
