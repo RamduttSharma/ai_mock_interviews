@@ -23,7 +23,6 @@ export async function POST(req: Request) {
       maxAge: expiresIn / 1000,
     });
 
-    console.log("hiiiii")
     return response;
   } catch (error) {
     console.log("SESSION ERROR:", error);
