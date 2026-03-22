@@ -58,6 +58,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
     }
 
     await feedbackRef.set(feedback);
+    console.log("Saving...");
+    
 
     return { success: true, feedbackId: feedbackRef.id };
   } catch (error) {
