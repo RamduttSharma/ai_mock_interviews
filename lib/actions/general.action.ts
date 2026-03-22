@@ -10,6 +10,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
   const { interviewId, userId, transcript, feedbackId } = params;
 
   try {
+    console.log("hii");
+    
     const formattedTranscript =transcript?.length ? transcript
       .map(
         (sentence: { role: string; content: string }) =>
