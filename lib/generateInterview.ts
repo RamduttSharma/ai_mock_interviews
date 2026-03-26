@@ -15,7 +15,7 @@ export async function generateInterview(data: {
 
     const { text: questions } = await generateText({
         model: google("gemini-2.5-flash"),
-        prompt: `Prepare questions for a job interview.
+        prompt: `Prepare two liner questions for a job interview.
       Role: ${role}
       Level: ${level}
       Techstack: ${techstack}
@@ -25,25 +25,25 @@ export async function generateInterview(data: {
     });
 
     const cleanedQuestions = questions
-  .replace(/```json/g, "")
-  .replace(/```/g, "")
-  .trim();
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
 
-const parsedQuestions = JSON.parse(cleanedQuestions);
+    const parsedQuestions = JSON.parse(cleanedQuestions);
 
-const interview = {
-  role,
-  type,
-  level,
-  techstack: Array.isArray(techstack)
-    ? techstack
-    : techstack.split(","),
-  questions: parsedQuestions,
-  userId: userid,
-  finalized: true,
-  coverImage: getRandomInterviewCover(),
-  createdAt: new Date().toISOString(),
-};
+    const interview = {
+        role,
+        type,
+        level,
+        techstack: Array.isArray(techstack)
+            ? techstack
+            : techstack.split(","),
+        questions: parsedQuestions,
+        userId: userid,
+        finalized: true,
+        coverImage: getRandomInterviewCover(),
+        createdAt: new Date().toISOString(),
+    };
 
     const docRef = await db.collection("interviews").add(interview);
 
