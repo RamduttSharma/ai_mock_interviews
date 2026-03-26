@@ -14,7 +14,7 @@ export async function generateInterview(data: {
     const { role, type, level, techstack, amount, userid } = data;
 
     const { text: questions } = await generateText({
-        model: google("gemini-2.5-flash"),
+        model: google("gemini-2.5-flash-lite"),
         prompt: `Prepare two liner questions for a job interview.
         Role: ${role}
         Level: ${level}
