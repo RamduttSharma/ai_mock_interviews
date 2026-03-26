@@ -16,12 +16,12 @@ export async function generateInterview(data: {
     const { text: questions } = await generateText({
         model: google("gemini-2.5-flash"),
         prompt: `Prepare two liner questions for a job interview.
-      Role: ${role}
-      Level: ${level}
-      Techstack: ${techstack}
-      Type: ${type}
-      Number of questions: ${amount}
-      Return JSON array only.`,
+        Role: ${role}
+        Level: ${level}
+        Techstack: ${techstack}
+        Type: ${type}
+        Number of questions: ${amount}
+        Return JSON array only.`,
     });
 
     const cleanedQuestions = questions

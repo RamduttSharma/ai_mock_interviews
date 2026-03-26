@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
+import Footer from "@/components/Footer";
 
 import { getCurrentUser, isAuthenticated, signOut } from "@/lib/actions/auth.action";
 
@@ -29,6 +30,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       </nav>
 
       {children}
+      <Footer/>
     </div>
   );
 };
