@@ -2,9 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-
+import ResumeUpload from "@/components/ResumeUpload";
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
+
 
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
@@ -37,8 +38,9 @@ async function Home() {
           </p>
 
           <Button asChild className="btn-primary max-sm:w-full">
-            <Link href="/interview">Start an Interview</Link>
+            <Link href="/interview">Generate an Interview</Link>
           </Button>
+          <ResumeUpload userId={user?.id} />
         </div>
 
         <Image
@@ -67,7 +69,7 @@ async function Home() {
               />
             ))
           ) : (
-            <p>You haven&apos;t taken any interviews yet</p>
+            <p>You haven&apos;t generated any interviews yet</p>
           )}
         </div>
       </section>
